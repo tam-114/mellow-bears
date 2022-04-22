@@ -26,42 +26,42 @@ function ShopScreen({navigation}) {
   let teddyBearList = [
     { 
       id: "1",
-      name: "Bench Teddy", 
+      teddyName: "Bench Teddy", 
       price: "$15.00", 
       url: "https://i.imgur.com/dhUEsox.png",
       // src: require("./images/bench-teddy.png"),
   },
     {
       id: "2",
-      name: "Colorful Teddy", 
+      teddyName: "Colorful Teddy", 
       price: "$20.00", 
       url: "https://i.imgur.com/zuOO2Xb.png",
       // src: require("./images/colorful-teddy.png"),
     },
     {
       id: "3",
-      name: "Couch Teddy", 
+      teddyName: "Couch Teddy", 
       price: "$14.00",
       url: "https://i.imgur.com/CRu94hV.png",
       // src: require("./images/couch-teddy.png"),
   },
     {
       id: "4",
-      name: "Flower Teddy", 
+      teddyName: "Flower Teddy", 
       price: "$12.00", 
       url: "https://i.imgur.com/JWezYcm.png",
       // src: require("./images/flower-teddy.png"),
     },
     {
       id: "5",
-      name: "Angry Teddy", 
+      teddyName: "Angry Teddy", 
       price: "$17.00", 
       url: "https://i.imgur.com/qNvzhYW.png",
       // src: require("./images/angry-teddy.png"),
     },
     {
       id: "6",
-      name: "Christmas Teddy", 
+      teddyName: "Christmas Teddy", 
       price: "$22.00", 
       url: "https://i.imgur.com/bLZhTPw.png",
       // src: require("./images/christmas-teddy.png"),
@@ -72,9 +72,9 @@ function ShopScreen({navigation}) {
   return (
     <>
     <View style={[styles.container, styles.backgroundColor]}>
-      <Text style={styles.homeText}>Shop the Mellow Bears Collection</Text>
+      <Text style={styles.shopTitleText}>Shop the Mellow Bears Collection</Text>
     </View>
-    <SafeAreaView>
+    <SafeAreaView style={styles.backgroundColor}>
       <FlatList
       vertical={true}
       data={teddyBearList}
@@ -83,13 +83,21 @@ function ShopScreen({navigation}) {
         
       <>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Form")}>
+          onPress={() => navigation.navigate({
+            name: "Form",
+            params: { teddyBearName: item.teddyName },
+            merge: true,
+          })}>
+            <View
+            style={{justifyContent: "center", alignItems: "center"}}>
+              <Image 
+              source={{uri: item.url}} 
+              resizeMode="contain"
+              style={{height: 200, width: 200}}/>
+            </View>
 
-          <Image source={{uri: item.url}} />
-          
-
-          <Text style={styles.backgroundColor}>{item.name}</Text>
-          <Text style={styles.backgroundColor}>{item.price}</Text>
+          <Text style={[styles.backgroundColor, styles.shopBodyText]}>{item.teddyName}</Text>
+          <Text style={[styles.backgroundColor, styles.shopBodyText]}>{item.price}</Text>
           
         </TouchableOpacity>    
       </>
@@ -99,13 +107,13 @@ function ShopScreen({navigation}) {
       </FlatList>
     </SafeAreaView>
    
-    <View style={[styles.backgroundColor, styles.container]}>
+    <View style={[styles.backgroundColor, styles.buttonContainer]}>
       <Button
-        buttonStyle={styles.buttonStyle}
+        buttonStyle={styles.buttonRow}
          title="Check Out"
          onPress={() => navigation.navigate("Form")}></Button>
         <Button
-         buttonStyle={styles.buttonStyle}
+         buttonStyle={styles.buttonRow}
          title="Back Home"
          onPress={() => navigation.navigate("Home")}></Button>
     </View>
@@ -113,112 +121,81 @@ function ShopScreen({navigation}) {
   )
 }
 
-function FormScreen({navigation}) {
+function FormScreen({navigation, route}) {
+  let [displayText, setDisplayText] = useState("");
+
   let formData = [
     {
-      placeholder: "Phone Number",
-      label: "phone",
-      regex: /^\(\d{3}\) \d{3}-\d{4}$/,
-      error: "Invalid phone number, please enter in (xxx) xxx-xxxx",
+       placeholder: "Email", 
+       id: "1"
     },
     {
-      placeholder: "Email",
-      label: "email",
-      regex: /^.+@.+\..+$/,
-      error: "Invalid email",
-    },
-    {
-      placeholder: "First Name",
-      label: "firstName",
-      regex: /^[^\d=?\\/@#%^&*()]+$/,
-      error: "Invalid first name",
-    },
-    {
-      placeholder: "Last Name",
-      label: "lastName",
-      regex: /^[^\d=?\\/@#%^&*()]+$/,
-      error: "Invalid last name",
-    },
-    {
-      placeholder: "Zip Code",
-      label: "zipcode",
-      regex: /^\d{5}$/,
-      error: "Invalid zip code",
-    },
-  ];
-
-  const FormItem = ({ formItem, value, setValue }) => {
-    let [valid, setValid] = useState(false);
-    let [error, setError] = useState("");
-    let validate = (content, setError) => {
-      // console.log("validating " + formItem.label + " with text " + content);
-      if (formItem.regex.test(content)) {
-        //setValue(content);
-        setValid(true);
-        setError("");
-        // console.log("Why is it clearing?")
-      } else {
-        setValid(false);
-        setError(formItem.error);
-        // console.log("Phone invalid");
-      }
-    };
-    
-
-    return (
-      <>
-        <TextInput
-          style={styles.input}
-          onChangeText={(value) => validate(value, setError)}
-          placeholder={formItem.placeholder}
-        ></TextInput>
-  
-        <Text style={{ color: "red" }}>{error}</Text>
-      </>
-    );
-  }
+      placeholder: "Phone Number", 
+      id: "2"
+   },
+   {
+    placeholder: "Name", 
+    id: "3"
+  },
+  ]
+  // console.log(route.params.teddyBearName)
+  // console.log(navigation.getParam("teddyName"))
   return (
     <>
     <View style={[styles.container, {backgroundColor: "#B1B7A1"}]}>
-      <Text style={styles.homeText}>Form</Text>
-      <Text style={styles.bodyText}>Place your order in the form below</Text>
-      {formData.map((formItem, index) => {
-        let [form, setForm] = useState({});
-        let [valid, setValid] = useState(false);
-        return (
-          <FormItem
-          key={index}
-            setValue={(newValue) => {
-              setForm((prevForm) => {
-                prevForm[formItem.label] = newValue;
-                return { ...prevForm };
-              });
-            }}
-            setValid={(value) => setValid(value)}
-            formItem={formItem}
-            value={form[formItem.label]}
-          ></FormItem>
-        );
-      })}
-      <Button
-        buttonStyle={styles.buttonStyle}
-        title="Submit"
-        onPress={() => navigation.navigate("Submit")}
-        // disabled={!valid}
-      ></Button>
-      <Button
-      buttonStyle={styles.buttonStyle}
-      title="Back Home"
-      onPress={() => navigation.navigate("Home")}></Button>
+      <Text style={styles.homeText}>Check Out</Text>
+      <Text style={styles.bodyText}>Place your order in the form below for {route.params?.teddyBearName} </Text>
+      <SafeAreaView>
+        <FlatList
+          data={formData}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => (
+            <>
+              <TextInput
+              placeholder={item.placeholder}
+              style={styles.input}
+              value={item.displayText}
+              onChangeText={setDisplayText}
+            ></TextInput>
+          </>
+          )} >
+          
+        </FlatList>
+      </SafeAreaView>
+      <View style={styles.buttonContainer}>
+          <Button
+            buttonStyle={styles.buttonRow}
+            title="Submit"
+            onPress={() => navigation.navigate({
+              name: "Submit",
+              params: {display: displayText}, 
+              merge: true,
+            })}
+           
+          ></Button>
+          <Button
+          buttonStyle={styles.buttonRow}
+          title="Reorder"
+          onPress={() => navigation.navigate("Shop")}></Button>
+          <Button
+          buttonStyle={styles.buttonRow}
+          title="Back Home"
+          onPress={() => navigation.navigate("Home")}></Button>
+      </View>
     </View>
     </>
   )
 }
 
-function SubmitScreen ({navigation}) {
+function SubmitScreen ({navigation, route}) {
+  // console.log(route.params?.display)
+  // console.log(route.params?.teddyBearName)
+  // console.log(route.params?.teddyName)
   return (
     <View style={{flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#B1B7A1"}}>
-      <Text style={styles.congratsText}>Congrats! Your Teddy Bear is on it's way 🎉</Text>
+    <Text style={styles.congratsText}>Congrats {route.params?.display}! Your Teddy Bear is on it's way 🎉</Text>
+    <Text style={styles.congratsSubText}>Your confirmation order for your Teddy Bear will be sent soon.</Text>
+    {/* <Text style={styles.congratsSubText}>Your confirmation order for a {route.params.teddyBearName} will be sent soon.</Text> */}
       <Button
       buttonStyle={styles.buttonStyle}
       title="Back Home"
@@ -234,8 +211,8 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="Shop"component={ShopScreen} />
-        <Stack.Screen name="Form" component={FormScreen}/>
-        <Stack.Screen name="Submit" component={SubmitScreen}/>
+        <Stack.Screen name="Form" component={FormScreen} />
+        <Stack.Screen name="Submit" component={SubmitScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -249,6 +226,11 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     alignSelf: "stretch"
   },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: "space-evenly",
+    flexDirection: "row"
+  },
   imageView: {
     flex: 1,
     flexDirection: "row",
@@ -256,12 +238,28 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
-    justifyContent: "space-evenly",
+    // justifyContent: "space-evenly",
     // backgroundRepeat: 'no-repeat',
     // backgroundPosition: 'center',
+    justifyContent: "center",
+    alignItems: "center"
   },
   backgroundColor: {
     backgroundColor: "#B1B7A1"
+  },
+  shopTitleText: {
+    fontSize: 30,
+    color: "#E1CCA6",
+    top: 0,
+    textAlign: "center",
+    fontWeight: "bold",
+    paddingBottom: 32,
+  },
+  shopBodyText: {
+    fontSize: 20,
+    color: "#E1CCA6",
+    textAlign: "center",
+    fontWeight: "bold"
   },
   homeText: {
     fontSize: 45,
@@ -296,6 +294,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  buttonRow: {
+    borderRadius: 8,
+    backgroundColor: "#99B6C7",
+    color: "#FFFFFF",
+    // width: "100%",
+    // alignSelf: "stretch",
+   
+    // justifyContent: "center",
+    // alignItems: "center",
+    //justifyContent: "flex-end",
+    //alignItems: "flex-end",
+  },
   input: {
     height: 40,
     margin: 24,
@@ -311,11 +321,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   congratsText: {
-    fontSize: 35,
+    fontSize: 30,
     // flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    textAlign: "center",
     paddingTop: 50,
+    paddingBottom: 20,
+    color: "#FFFFFF",
+  },
+  congratsSubText: {
+    fontSize: 20,
+    // flex: 1,
+    textAlign: "center",
+    paddingBottom: 10,
     color: "#FFFFFF",
   }
 });
