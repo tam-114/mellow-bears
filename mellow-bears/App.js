@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ImageBackground, TextInput } from 'react-native';
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Button } from "react-native-elements";
 import { useCallback, useState } from "react";
@@ -80,30 +80,34 @@ function ShopScreen({navigation}) {
       data={teddyBearList}
       keyExtractor={item => item.id.toString()}
       renderItem={({ item }) => (
+        
       <>
         <TouchableOpacity
           onPress={() => navigation.navigate("Form")}>
 
           <Image source={{uri: item.url}} />
+          
 
           <Text style={styles.backgroundColor}>{item.name}</Text>
           <Text style={styles.backgroundColor}>{item.price}</Text>
+          
         </TouchableOpacity>    
-      </> 
+      </>
+         
       )}
       >
       </FlatList>
     </SafeAreaView>
    
     <View style={[styles.backgroundColor, styles.container]}>
+      <Button
+        buttonStyle={styles.buttonStyle}
+         title="Check Out"
+         onPress={() => navigation.navigate("Form")}></Button>
         <Button
          buttonStyle={styles.buttonStyle}
          title="Back Home"
          onPress={() => navigation.navigate("Home")}></Button>
-        <Button
-        buttonStyle={styles.buttonStyle}
-         title="Check Out"
-         onPress={() => navigation.navigate("Form")}></Button>
     </View>
     </>
   )
