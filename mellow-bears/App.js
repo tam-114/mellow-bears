@@ -23,6 +23,7 @@ function HomeScreen({navigation}) {
 }
 
 function ShopScreen({navigation}) {
+  let [teddyBear, setTeddyBear] = useState("")
   let teddyBearList = [
     { 
       id: "1",
@@ -76,7 +77,7 @@ function ShopScreen({navigation}) {
     </View>
     <SafeAreaView style={styles.backgroundColor}>
       <FlatList
-      vertical={true}
+      // vertical={true}
       data={teddyBearList}
       keyExtractor={item => item.id.toString()}
       renderItem={({ item }) => (
@@ -93,7 +94,8 @@ function ShopScreen({navigation}) {
               <Image 
               source={{uri: item.url}} 
               resizeMode="contain"
-              style={{height: 200, width: 200}}/>
+              style={{height: 200, width: 200}}
+              />
             </View>
 
           <Text style={[styles.backgroundColor, styles.shopBodyText]}>{item.teddyName}</Text>
@@ -168,7 +170,7 @@ function FormScreen({navigation, route}) {
             title="Submit"
             onPress={() => navigation.navigate({
               name: "Submit",
-              params: {display: displayText}, 
+              params: {display: displayText},
               merge: true,
             })}
            
@@ -190,12 +192,13 @@ function FormScreen({navigation, route}) {
 function SubmitScreen ({navigation, route}) {
   // console.log(route.params?.display)
   // console.log(route.params?.teddyBearName)
-  // console.log(route.params?.teddyName)
+  // console.log(route.params?.teddyBear)
   return (
     <View style={{flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#B1B7A1"}}>
     <Text style={styles.congratsText}>Congrats {route.params?.display}! Your Teddy Bear is on it's way 🎉</Text>
     <Text style={styles.congratsSubText}>Your confirmation order for your Teddy Bear will be sent soon.</Text>
-    {/* <Text style={styles.congratsSubText}>Your confirmation order for a {route.params.teddyBearName} will be sent soon.</Text> */}
+    {/* <Text style={styles.congratsSubText}>Your confirmation order for a {route.params.teddyBear} will be sent soon.</Text> */}
+    {/* <Text style={styles.congratsSubText}>Your confirmation order for a {route.params?.teddyBearName} will be sent soon.</Text> */}
       <Button
       buttonStyle={styles.buttonStyle}
       title="Back Home"
