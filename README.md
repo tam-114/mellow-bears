@@ -15,7 +15,7 @@ Mellow Bears is a React Native project of a Teddy Bear e-commerce app using Reac
     * [x] TextInput component to grab the user data and display it on the Submit Screen
     * [x] Button components to Submit (to Submit Screen), Reorder (back to Shop Screen), Back Home (back to Home Screen)
 - Submit Screen:
-    * [x] Text component to congratulate user by the name provided on Form screen
+    * [x] Text component to congratulate user by the name provided on Form Screen
     * [x] Button component to navigate back to Home Screen
 
 ## GitHub Pages Link: https://tam-114.github.io/mellow-bears/
